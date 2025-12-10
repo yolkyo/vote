@@ -3,437 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>塔羅牌2025投票</title>
+  <link rel="icon" href="images/tarot-card.png" type="image/png">
   <style>
-    /* 極簡風格 CSS：只保留排版與選取視覺效果 */
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    color: #333;
-    max-width: 1000px;
-    margin: 0 auto;
-
-    /* --- 背景圖片設定 --- */
-    background-image: url('bg.jpg'); /* 替換成您的圖片名稱 */
-    background-size: cover;          /* 圖片覆蓋整個背景 */
-    background-attachment: fixed;    /* 背景圖片不隨內容滾動 */
-    background-color: #f4f4f4;       /* 如果圖片載入失敗，顯示的顏色 */
-    /* --- 背景設定結束 --- */
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h2 {
-    color: #000;
-    border-bottom: 1px solid #ccc;
-    padding: 5px 0;
-    margin-top: 30px;
-    font-size: 1.4em;
-}
-
-/* 選項網格排版 */
-.options-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px; 
-    padding-top: 10px;
-}
-
-/* 選項卡片基礎樣式 */
-.option-card {
-    border: 1px solid #ccc;
-    padding: 8px;
-    cursor: pointer;
-    transition: background-color 0.1s;
-    background-color: #fff;
-    border-radius: 8px; /* 卡片圓角 */
-}
-
-/* 核心功能：選中狀態的樣式 */
-.option-card.selected {
-    background-color: #AEECD9; /* 選中色：薄荷綠 */
-    color: #333; 
-    border-color: #92b6a9;
-}
-
-.option-card.selected h4, .option-card.selected p {
-    color: #333;
-}
-
-.option-card h4, .option-card p {
-    margin: 0;
-}
-
-.count-display {
-    font-size: 0.9em;
-    color: #888;
-}
-
-.text-area-section {
-    padding: 15px;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-    border-radius: 8px; /* 心願區塊圓角 */
-}
-
-#favoriteSongText {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    resize: vertical; 
-    box-sizing: border-box;
-    border-radius: 4px; /* 輸入框圓角 */
-}
-
-/* 提交按鈕樣式 */
-.submit-button {
-    display: block;
-    width: 250px;
-    margin: 10px auto;
-    padding: 10px;
-    background-color: #784F25; /* 巧克力色 */
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 8px; /* 按鈕圓角 */
-}
-
-.submit-button:hover {
-    background-color: #5d3e1d; 
-}
-
+    body {
+      font-family: Arial, sans-serif;
+      background: url('images/star.jpg') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+      color: white;
+      padding-top: 120px;
+    }
+    h1 {
+      font-size: 2.5em;
+      text-shadow: 2px 2px 8px #000;
+    }
+    p {
+      font-size: 1.2em;
+      text-shadow: 1px 1px 5px #000;
+    }
+    .button {
+      margin-top: 40px;
+      padding: 15px 40px;
+      font-size: 1.3em;
+      background-color: #784F25;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 2px 2px 8px #000;
+    }
+    .button:hover {
+      background-color: #5d3e1d;
+    }
   </style>
 </head>
 <body>
-  <h1>塔羅牌 2025 歌曲投票與心願</h1>
-  <div id="votingApp"></div>
+  <h1>🔮 塔羅牌 2025 投票</h1>
+  <p>點擊下方按鈕開始投票</p>
 
-  <script>
-    const votingSections = {
-    'Chinese': {
-        title: '一、中文歌曲投票 (最多選擇 5 首)',
-        limit: 5,
-        options: [
-            // 85 首中文歌單
-            { id: 'zh_1', name: '夏天的風', category: '元衛覺醒' },
-            { id: 'zh_2', name: '三人遊', category: '方大同' },
-            { id: 'zh_3', name: '愛愛愛', category: '方大同' },
-            { id: 'zh_4', name: '紅豆', category: '王菲' },
-            { id: 'zh_5', name: '小幸運', category: '田馥甄' },
-            { id: 'zh_6', name: '寂寞寂寞就好', category: '田馥甄' },
-            { id: 'zh_7', name: '白鴿', category: '伍佰' },
-            { id: 'zh_8', name: '挪威的森林', category: '伍佰' },
-            { id: 'zh_9', name: '浪人情歌', category: '伍佰' },
-            { id: 'zh_10', name: '暮色迴響', category: '吉星出租' },
-            { id: 'zh_11', name: '不是不滿足', category: '江蕙' },
-            { id: 'zh_12', name: '我還年輕 我還年輕', category: '老王樂隊' },
-            { id: 'zh_13', name: '披星戴月的想你', category: '告五人' },
-            { id: 'zh_14', name: '董小姐', category: '宋冬野' },
-            { id: 'zh_15', name: '山丘', category: '李宗盛' },
-            { id: 'zh_16', name: '給自己的歌', category: '李宗盛' },
-            { id: 'zh_17', name: '手放開', category: '李聖傑' },
-            { id: 'zh_18', name: '痴心絕對', category: '李聖傑' },
-            { id: 'zh_19', name: '喜劇之王', category: '李榮浩' },
-            { id: 'zh_20', name: '有點甜', category: '汪蘇瀧 & BY2' },
-            { id: 'zh_21', name: '不該', category: '周杰倫 feat. 張惠妹' },
-            { id: 'zh_22', name: '不為誰而作的歌', category: '林俊傑' },
-            { id: 'zh_23', name: '江南', category: '林俊傑' },
-            { id: 'zh_24', name: '那些你很冒險的夢', category: '林俊傑' },
-            { id: 'zh_25', name: '害怕', category: '林俊傑' },
-            { id: 'zh_26', name: '浪費', category: '林宥嘉' },
-            { id: 'zh_27', name: '兜圈', category: '林宥嘉' },
-            { id: 'zh_28', name: '眼色', category: '林宥嘉' },
-            { id: 'zh_29', name: '太陽', category: '邱振哲' },
-            { id: 'zh_30', name: '天高地厚', category: '信樂團' },
-            { id: 'zh_31', name: '下雨天', category: '南拳媽媽' },
-            { id: 'zh_32', name: '男人KTV', category: '胡彥斌' },
-            { id: 'zh_33', name: '那些年', category: '胡夏' },
-            { id: 'zh_34', name: '浪流連', category: '茄子蛋' },
-            { id: 'zh_35', name: '女孩', category: '韋禮安' },
-            { id: 'zh_36', name: '因為愛', category: '韋禮安' },
-            { id: 'zh_37', name: '在你身邊', category: '韋禮安' },
-            { id: 'zh_38', name: '如果可以', category: '韋禮安' },
-            { id: 'zh_39', name: '兩腳書櫥的逃亡', category: '韋禮安' },
-            { id: 'zh_40', name: '慢慢等', category: '韋禮安' },
-            { id: 'zh_41', name: '天黑黑', category: '孫燕姿' },
-            { id: 'zh_42', name: '神奇', category: '孫燕姿' },
-            { id: 'zh_43', name: '夜空中最亮的星', category: '逃跑計劃' },
-            { id: 'zh_44', name: '月亮惹的禍', category: '張宇' },
-            { id: 'zh_45', name: '曲終人散', category: '張宇' },
-            { id: 'zh_46', name: '趁早', category: '張宇' },
-            { id: 'zh_47', name: '口是心非', category: '張雨生' },
-            { id: 'zh_48', name: '白月光', category: '張信哲' },
-            { id: 'zh_49', name: '母系社會', category: '張惠妹' },
-            { id: 'zh_50', name: '寂寞先生', category: '曹格' },
-            { id: 'zh_51', name: '慢冷', category: '梁靜茹' },
-            { id: 'zh_52', name: '如果沒有你', category: '莫文蔚' },
-            { id: 'zh_53', name: '水星記', category: '郭頂' },
-            { id: 'zh_54', name: '淒美地', category: '郭頂' },
-            { id: 'zh_55', name: '孤獨患者', category: '陳奕迅' },
-            { id: 'zh_56', name: '愛情轉移', category: '陳奕迅' },
-            { id: 'zh_57', name: '奇妙能力歌', category: '陳粒' },
-            { id: 'zh_58', name: '天后', category: '陳勢安' },
-            { id: 'zh_59', name: '旅行的意義', category: '陳綺貞' },
-            { id: 'zh_60', name: '沒那麼簡單', category: '黃小琥' },
-            { id: 'zh_61', name: '飆高音', category: '黃明志' },
-            { id: 'zh_62', name: '雨愛', category: '楊丞琳' },
-            { id: 'zh_63', name: '殺死那個石家莊人', category: '萬能青年旅店' },
-            { id: 'zh_64', name: '賊', category: '載佩妮' },
-            { id: 'zh_65', name: '其實沒那麼寂寞', category: '廖文強' },
-            { id: 'zh_66', name: '夜夜夜夜', category: '齊秦' },
-            { id: 'zh_67', name: '玫瑰少年', category: '蔡依林' },
-            { id: 'zh_68', name: '別找我麻煩', category: '蔡健雅' },
-            { id: 'zh_69', name: '空白格', category: '蔡健雅' },
-            { id: 'zh_70', name: '100種生活', category: '盧廣仲' },
-            { id: 'zh_71', name: '幾分之幾', category: '盧廣仲' },
-            { id: 'zh_72', name: '皮囊', category: '蕭敬騰' },
-            { id: 'zh_73', name: '末班車', category: '蕭煌奇' },
-            { id: 'zh_74', name: '於是長大了以後', category: '謝和弦' },
-            { id: 'zh_75', name: '燈光', category: '謝震廷' },
-            { id: 'zh_76', name: '左手指月', category: '薩頂頂' },
-            { id: 'zh_77', name: '你啊你啊', category: '魏如萱' },
-            { id: 'zh_78', name: '想你的夜', category: '關喆' },
-            { id: 'zh_79', name: '不介意', category: '鶴 The Crane' },
-            { id: 'zh_80', name: '有一種悲傷', category: 'A-Lin' },
-            { id: 'zh_81', name: '跳樓機', category: 'LIB利比' },
-            { id: 'zh_82', name: '雨季型戀人', category: 'Limi' },
-            { id: 'zh_83', name: 'Sui 水', category: 'Limi,屠衡,雷擎' },
-            { id: 'zh_84', name: '陌生人', category: 'Soler' },
-            { id: 'zh_85', name: '獨上C樓', category: 'YELLOW黃宣' },
-        ]
-    },
-    'Japanese': {
-        title: '二、日文歌曲投票 (最多選擇 3 首)',
-        limit: 3,
-        options: [
-            // 25 首日文歌單
-            { id: 'jp_1', name: '天ノ弱', category: '164' },
-            { id: 'jp_2', name: 'MIRA', category: '小春六花' },
-            { id: 'jp_3', name: '僕が死のうと思ったのは', category: '中島美嘉' },
-            { id: 'jp_4', name: '鬼丿宴', category: '友成空' },
-            { id: 'jp_5', name: 'God Knows', category: '平野綾' },
-            { id: 'jp_6', name: 'Lemon', category: '米津玄師' },
-            { id: 'jp_7', name: '灰色と青', category: '米津玄師 • 菅田将暉' },
-            { id: 'jp_8', name: 'ふわふわ時間', category: '放課後ティータイム' },
-            { id: 'jp_9', name: 'まちがいさがし', category: '菅田将暉' },
-            { id: 'jp_10', name: 'ドライフラワー', category: '優里' },
-            { id: 'jp_11', name: '死ぬのがいいわ', category: '藤井風' },
-            { id: 'jp_12', name: 'Bunny Girl', category: 'AKASAKI' },
-            { id: 'jp_13', name: 'ソラニン', category: 'AKFG' },
-            { id: 'jp_14', name: '今夜月の見える丘に', category: 'B\'z' },
-            { id: 'jp_15', name: 'アニマル', category: 'Deco*27' },
-            { id: 'jp_16', name: 'Wherever you are', category: 'One Ok Rock' },
-            { id: 'jp_17', name: 'レイン', category: 'SID' },
-            { id: 'jp_18', name: 'オレンジ', category: 'SPYAIR' },
-            { id: 'jp_19', name: 'unravel', category: 'TK from 凛として時雨' },
-            { id: 'jp_20', name: '晚餐歌', category: 'tuki.' },
-            { id: 'jp_21', name: '怪獣の花唄', category: 'Vaundy' },
-            { id: 'jp_22', name: '世界が終わるまでは', category: 'WANDS' },
-            { id: 'jp_23', name: 'はいよろこんで', category: 'こっちのけんと' },
-            { id: 'jp_24', name: 'にゃんにゃんにゃん', category: 'コレサワ' },
-            { id: 'jp_25', name: 'フォニイ', category: 'ツミキ feat. kafu' },
-        ]
-    },
-    'English': {
-        title: '三、英文歌曲投票 (最多選擇 5 首)',
-        limit: 5,
-        options: [
-            // 67 首英文歌單
-            { id: 'en_1', name: 'Singalongsong', category: '方大同' },
-            { id: 'en_2', name: 'No Boundaries', category: 'Adam Lambert' },
-            { id: 'en_3', name: 'Whataya Want From Me', category: 'Adam Lambert' },
-            { id: 'en_4', name: 'Lost Stars', category: 'Adam Levine' },
-            { id: 'en_5', name: 'Hello', category: 'Adele' },
-            { id: 'en_6', name: 'Someone Like You', category: 'Adele' },
-            { id: 'en_7', name: 'Legends Never Die', category: 'Against The Current' },
-            { id: 'en_8', name: 'If I Ain\'t Got You', category: 'Alicia Keys' },
-            { id: 'en_9', name: 'Grenade', category: 'Bruno Mars' },
-            { id: 'en_10', name: 'Just the way you are', category: 'Bruno Mars' },
-            { id: 'en_11', name: 'The Lazy Song', category: 'Bruno Mars' },
-            { id: 'en_12', name: 'When I Was Your Man', category: 'Bruno Mars' },
-            { id: 'en_13', name: 'Phoenix', category: 'Cailin Russo, Chrissy Costanza' },
-            { id: 'en_14', name: 'You Are The Reason', category: 'Calum Scott' },
-            { id: 'en_15', name: 'Dancing On My Own', category: 'Calum Scott' },
-            { id: 'en_16', name: 'Close to you', category: 'Carpenters' },
-            { id: 'en_17', name: 'A Thousand Years', category: 'Christina Perri' },
-            { id: 'en_18', name: 'Can\'t Help Falling In Love', category: 'Crazy Rich Asians' },
-            { id: 'en_19', name: 'Best Part', category: 'Daniel Caesar ft. H.E.R' },
-            { id: 'en_20', name: 'Bad Day', category: 'Daniel Powter' },
-            { id: 'en_21', name: 'It\'s Not Over', category: 'Daughtry' },
-            { id: 'en_22', name: 'Over You', category: 'Daughtry' },
-            { id: 'en_23', name: 'Cake By The Ocean', category: 'DNCE' },
-            { id: 'en_24', name: '9 to 5', category: 'Dolly Parton' },
-            { id: 'en_25', name: 'Don\'t', category: 'Ed Sheeran' },
-            { id: 'en_26', name: 'Perfect', category: 'Ed Sheeran' },
-            { id: 'en_27', name: 'Photograph', category: 'Ed Sheeran' },
-            { id: 'en_28', name: 'Shape Of You', category: 'Ed Sheeran' },
-            { id: 'en_29', name: 'The A Team', category: 'Ed Sheeran' },
-            { id: 'en_30', name: 'Fly Me to the Moon', category: 'Frank Sinatra' },
-            { id: 'en_31', name: 'Careless Whisper', category: 'George Michael' },
-            { id: 'en_32', name: 'Watermelon Sugar', category: 'Harry Styles' },
-            { id: 'en_33', name: 'Golden', category: 'HUNTR/X' },
-            { id: 'en_34', name: 'Warriors', category: 'Imagine Dragons' },
-            { id: 'en_35', name: 'Believer', category: 'Imagine Dragons x J.I.D' },
-            { id: 'en_36', name: 'Enemy', category: 'Imagine Dragons x J.I.D' },
-            { id: 'en_37', name: 'Scars', category: 'James Bay' },
-            { id: 'en_38', name: 'You\'re Beautiful', category: 'James Blunt' },
-            { id: 'en_39', name: 'I Won’t Give Up', category: 'Jason Mraz' },
-            { id: 'en_40', name: 'I’m Yours', category: 'Jason Mraz' },
-            { id: 'en_41', name: 'comethru', category: 'Jeremy Zucker' },
-            { id: 'en_42', name: 'All of Me', category: 'John Legend' },
-            { id: 'en_43', name: 'beside you', category: 'keshi' },
-            { id: 'en_44', name: 'Drunk', category: 'keshi' },
-            { id: 'en_45', name: 'Die with a smile', category: 'Lady Gaga, Bruno Mars' },
-            { id: 'en_46', name: 'Malibu Nights', category: 'LANY' },
-            { id: 'en_47', name: 'Someone You Love', category: 'Lewis Capaldi' },
-            { id: 'en_48', name: 'In The End', category: 'Linkin Park' },
-            { id: 'en_49', name: '7 Years', category: 'Lukas Graham' },
-            { id: 'en_50', name: 'Maps', category: 'Maroon 5' },
-            { id: 'en_51', name: 'She Will Be Loved', category: 'Maroon 5' },
-            { id: 'en_52', name: 'Sugar', category: 'Maroon 5' },
-            { id: 'en_53', name: 'Speechless', category: 'Naomi Scott' },
-            { id: 'en_54', name: 'L-O-V-E', category: 'Nat King Cole' },
-            { id: 'en_55', name: 'GODS', category: 'NewJeans' },
-            { id: 'en_56', name: 'We Are', category: 'One Ok Rock' },
-            { id: 'en_57', name: 'Heartache', category: 'One Ok Rock' },
-            { id: 'en_58', name: 'Apologize', category: 'OneRepublic' },
-            { id: 'en_59', name: 'Made for You', category: 'OneRepublic' },
-            { id: 'en_60', name: 'Counting star', category: 'OneRepublic' },
-            { id: 'en_61', name: 'Burn It All Down', category: 'PVRIS' },
-            { id: 'en_62', name: 'You\'ve Got a Friend in Me', category: 'Randy Newman' },
-            { id: 'en_63', name: 'The Best Day', category: 'Taylor Swift' },
-            { id: 'en_64', name: 'Lose Control', category: 'Teddy Swims' },
-            { id: 'en_65', name: 'Hey, Soul Sister', category: 'Train' },
-            { id: 'en_66', name: 'rewrite the stars', category: 'Zac Efron & Zendaya' },
-            { id: 'en_67', name: 'ignite', category: 'Zedd' },
-        ]
-    },
-    'Taiwanese': {
-        title: '四、台語歌曲投票 (最多選擇 3 首)',
-        limit: 3,
-        options: [
-            // 10 首台語歌單
-            { id: 'tw_1', name: '家後', category: '江蕙' },
-            { id: 'tw_2', name: '落雨聲', category: '江蕙' },
-            { id: 'tw_3', name: '拌拌咧', category: '李竺芯' },
-            { id: 'tw_4', name: '再會啦！心愛的無緣的人', category: '施文彬' },
-            { id: 'tw_5', name: '浪子回頭', category: '茄子蛋' },
-            { id: 'tw_6', name: '鼓聲若響', category: '新寶島康樂隊' },
-            { id: 'tw_7', name: '魚仔', category: '盧廣仲' },
-            { id: 'tw_8', name: '阿嬤的話', category: '蕭煌奇' },
-            { id: 'tw_9', name: '追追追', category: '蘇打綠' },
-            { id: 'tw_10', name: '無眠', category: '蘇打綠' },
-        ]
-    }
-};
+  <!-- 開始投票按鈕：同一視窗開啟 Apps Script -->
+  <a href="https://script.google.com/macros/s/AKfycbxrR0gi8L10mBrUozYD_25n2_ScjWq3qjWfj8xa9Dj2YkFaXXOW0vFCYJDd7alw-4fu/exec">
+    <button class="button">開始投票</button>
+  </a>
 
-
-    const selectedVotes = {
-      Chinese: new Set(),
-      Japanese: new Set(),
-      English: new Set(),
-      Taiwanese: new Set()
-    };
-
-    function renderVotingSections() {
-      const mainContainer = document.getElementById('votingApp');
-      mainContainer.innerHTML = '';
-
-      Object.keys(votingSections).forEach(sectionKey => {
-        const sectionData = votingSections[sectionKey];
-        const sectionElement = document.createElement('section');
-        sectionElement.className = 'voting-section';
-        sectionElement.innerHTML = `
-          <h2>${sectionData.title} <span id="count_${sectionKey}">(已選 0 首)</span></h2>
-          <div class="options-grid" id="options_${sectionKey}"></div>
-        `;
-        mainContainer.appendChild(sectionElement);
-
-        const optionsGrid = document.getElementById(`options_${sectionKey}`);
-        sectionData.options.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'option-card';
-          card.innerHTML = `<h4>${item.name}</h4><p>${item.category}</p>`;
-          card.onclick = () => handleVote(sectionKey, item.id, card);
-          optionsGrid.appendChild(card);
-        });
-      });
-
-      const textSection = document.createElement('section');
-      textSection.innerHTML = `
-        <h2>最喜歡的一首歌是什麼？為什麼？</h2>
-        <textarea id="favoriteSongText" rows="4" placeholder="請輸入歌名與原因..."></textarea>
-      `;
-      mainContainer.appendChild(textSection);
-
-      const submitBtn = document.createElement('button');
-      submitBtn.textContent = '提交';
-      submitBtn.className = 'submit-button';
-      submitBtn.onclick = collectResults;
-      mainContainer.appendChild(submitBtn);
-    }
-
-    function handleVote(sectionKey, optionId, cardElement) {
-      const section = votingSections[sectionKey];
-      const votes = selectedVotes[sectionKey];
-
-      if (votes.has(optionId)) {
-        votes.delete(optionId);
-        cardElement.classList.remove('selected');
-      } else {
-        if (votes.size >= section.limit) {
-          alert(`最多只能選擇 ${section.limit} 首歌曲！`);
-          return;
-        }
-        votes.add(optionId);
-        cardElement.classList.add('selected');
-      }
-      updateSelectionCount(sectionKey);
-    }
-
-    function updateSelectionCount(sectionKey) {
-      const countDisplay = document.getElementById(`count_${sectionKey}`);
-      countDisplay.textContent = `(已選 ${selectedVotes[sectionKey].size} 首)`;
-    }
-
-    function collectResults() {
-      function getNames(sectionKey) {
-        const idSet = selectedVotes[sectionKey];
-        const options = votingSections[sectionKey].options;
-        const nameMap = Object.fromEntries(options.map(opt => [opt.id, opt.name]));
-        return Array.from(idSet).map(id => nameMap[id]).join('; ');
-      }
-
-      const dataToSend = {
-        ChineseVotes: getNames("Chinese"),
-        JapaneseVotes: getNames("Japanese"),
-        EnglishVotes: getNames("English"),
-        TaiwaneseVotes: getNames("Taiwanese"),
-        FavoriteText: document.getElementById('favoriteSongText').value.trim()
-      };
-
-      google.script.run
-        .withSuccessHandler(function (data) {
-          if (data.result === "success") {
-            alert("✅ 感謝您的投票！");
-            Object.keys(selectedVotes).forEach(key => selectedVotes[key].clear());
-            document.querySelectorAll('.option-card.selected').forEach(card => card.classList.remove('selected'));
-            Object.keys(votingSections).forEach(updateSelectionCount);
-            document.getElementById('favoriteSongText').value = '';
-          } else {
-            alert("❌ 提交失敗：" + data.message);
-          }
-        })
-        .withFailureHandler(function (err) {
-          alert("❌ 錯誤：" + err.message);
-        })
-        .submitVote(dataToSend);
-    }
-
-    document.addEventListener('DOMContentLoaded', renderVotingSections);
-  </script>
-</body>
-</html>
+  <!-- 返回首頁按鈕：回到 GitHub Pages 封面 -->
+  <br><br>
+  <a href="https://yolkyo.github.io/vote/">
+    <button class="button">返回首頁</button>
